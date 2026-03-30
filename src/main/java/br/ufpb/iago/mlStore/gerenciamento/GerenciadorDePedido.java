@@ -14,20 +14,20 @@ import java.util.List;
 public class GerenciadorDePedido {
     private List<Pedido> pedidos;
     private  int contadorPedidos = 0;
-    private static PersistenciaDePedidos pdp = new PersistenciaDePedidos();
+    private  PersistenciaDePedidos pdp = new PersistenciaDePedidos();
 
     private List<Produto> listaProdutosGlobais;
-    private static br.ufpb.iago.mlStore.armazenamento.PersistenciaDeProdutos pdpProdutos = new br.ufpb.iago.mlStore.armazenamento.PersistenciaDeProdutos();
+    private  br.ufpb.iago.mlStore.armazenamento.PersistenciaDeProdutos pdpProdutos = new br.ufpb.iago.mlStore.armazenamento.PersistenciaDeProdutos();
 
     public GerenciadorDePedido(List<User> usuarios, List<Produto> produtos) throws IOException {
         pedidos = pdp.carregar(usuarios, produtos);
-        this.contadorPedidos = contarPedidos();
+        this.contadorPedidos = encontrarMaiorId() + 1;
         this.listaProdutosGlobais = produtos; // NOVO: Guarda a referência da lista
     }
 
     public GerenciadorDePedido(List<User> usuarios) throws IOException {
         pedidos = pdp.carregar(usuarios, new ArrayList<>());
-        this.contadorPedidos = contarPedidos();
+        this.contadorPedidos = encontrarMaiorId() + 1;
         this.listaProdutosGlobais = new ArrayList<>(); // NOVO
     }
     public Pedido buscarPedidoPorId(String idPedido) {
@@ -104,12 +104,19 @@ public class GerenciadorDePedido {
         return resultado;
     }
 
-    private int contarPedidos(){
-        int contador = 0;
-        for(Pedido p : this.pedidos){
-            contador++;
+    private int encontrarMaiorId() {
+        int maiorId = 0;
+        for (Pedido p : this.pedidos) {
+            try {
+                String sufixo = p.getIdPedido().replaceAll("[^0-9]", "");
+                int numero = Integer.parseInt(sufixo);
+                if (numero > maiorId) {
+                    maiorId = numero;
+                }
+            } catch (NumberFormatException e) {
+                // ignora IDs com formato inesperado
+            }
         }
-        return contador;
+        return maiorId;
     }
-
 }

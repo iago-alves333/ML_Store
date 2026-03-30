@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RepositorioDeUsuario {
     private List<User> users;
-    private static int contadorAdmin;
+    private  int contadorAdmin;
     private static PersistenciaDeUsuarios pdu = new PersistenciaDeUsuarios();
 
     public RepositorioDeUsuario() throws IOException {

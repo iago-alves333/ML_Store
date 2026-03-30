@@ -48,7 +48,7 @@ public class Pedido {
             throw new IllegalArgumentException("Erro: O produto não pode ser nulo.");
         }
         this.produtos.add(produto);
-        this.valorTotal += produto.getPreco();
+        this.valorTotal += produto.valorComImposto();
     }
 
     public void exibirResumo() {

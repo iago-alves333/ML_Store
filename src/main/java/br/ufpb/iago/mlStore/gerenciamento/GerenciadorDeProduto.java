@@ -94,7 +94,7 @@ public class GerenciadorDeProduto  implements Gerenciador {
     @Override
     public boolean disponibilidadeEmEstoque(int id) {
         for(Produto produto : this.produtos){
-            if(produto.getQuantidadeEstoque() > 0){
+            if(produto.getId() == id && produto.getQuantidadeEstoque() > 0){
                 return true;
             }
         }
