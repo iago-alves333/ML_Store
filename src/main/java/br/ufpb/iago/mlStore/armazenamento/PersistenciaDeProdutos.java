@@ -27,9 +27,15 @@ public class PersistenciaDeProdutos extends Persistencia {
     public List<Produto> carregar(List<TipoProduto> tipos) throws IOException {
         List<Produto> produtos = new ArrayList<>();
         for (String linha : carregarLinhas(CAMINHO)){
+
+            // Adicione esta verificação aqui!
+            if (linha.trim().isEmpty()) {
+                continue;
+            }
+
             String [] partes = linha.split(";");
             if(partes.length != 5){
-                throw new ArquivoCorrompidoException("Arquivo " + CAMINHO + " Não Possui Todos os Parametros");
+                throw new ArquivoCorrompidoException("Arquivo " + CAMINHO + " Não Possui Todos os Parametros na linha: " + linha);
             }
 
             TipoProduto tipo = buscarTipo(partes[4], tipos);

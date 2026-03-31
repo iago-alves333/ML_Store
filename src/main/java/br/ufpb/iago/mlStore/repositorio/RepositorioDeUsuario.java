@@ -12,22 +12,25 @@ import java.util.List;
 
 public class RepositorioDeUsuario {
     private List<User> users;
-    private  int contadorAdmin;
+    private int contadorAdmin;
     private static PersistenciaDeUsuarios pdu = new PersistenciaDeUsuarios();
 
     public RepositorioDeUsuario() throws IOException {
         users = pdu.carregarUsuarios(new ArrayList<>());
-        contadorAdmin = contarAdmin();
+
+        // 1. Primeiro verifica e cria o admin padrão se for necessário
         if(!verificarAdmin()){
             this.criarAdminPadrao();
         }
+
+        // 2. SÓ ENTÃO conta quantos admins existem de fato na lista
+        contadorAdmin = contarAdmin();
     }
 
     private void criarAdminPadrao() throws IOException{
         User adminRaiz = new Admin("admin", "admin@email.com", "admin123", new Endereco(), "ADMIN000");
         users.add(adminRaiz);
         pdu.salvar(users);
-
     }
 
     private boolean verificarAdmin(){
@@ -49,7 +52,7 @@ public class RepositorioDeUsuario {
         return contador;
     }
 
-    public  List<User> acharTodos() {
+    public List<User> acharTodos() {
         return users;
     }
 
